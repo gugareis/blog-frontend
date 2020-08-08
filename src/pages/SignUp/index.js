@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import UsuárioService from '../../services/usuarioServices' 
+import UserService from '../../services/userServices' 
 
 import Logo from "../../assets/images/logoBlog2.png";
 
@@ -20,7 +20,7 @@ class SignUp extends Component {
   };
   constructor(props){
     super(props);
-    this.service = new UsuárioService();
+    this.service = new UserService();
   }
   handleSignUp = async e => {
     e.preventDefault();

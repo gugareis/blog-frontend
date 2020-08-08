@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 
 import Logo from "../../assets/images/logoBlog2.png";
-import UsuárioService from '../../services/usuarioServices' 
+import UserService from '../../services/userServices' 
 import { login } from "../../services/auth";
 
 import {InputText} from 'primereact/inputtext';
@@ -19,7 +19,7 @@ class SignIn extends Component {
   };
   constructor(props){
     super(props);
-    this.service = new UsuárioService();
+    this.service = new UserService();
 }
   handleSignIn = async e => {
     e.preventDefault();

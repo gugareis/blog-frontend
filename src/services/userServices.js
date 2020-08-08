@@ -1,6 +1,6 @@
 import ApiService from './apiservice'
 
-class UsuarioService extends ApiService {
+class UserService extends ApiService {
     constructor(){
         super('/api')
     }
@@ -10,5 +10,8 @@ class UsuarioService extends ApiService {
     save(dados){
         return this.post('/newaccount',dados)
     }
+    getUser(){
+        return this.get('/user');
+    }
 }
-export default UsuarioService
+export default UserService

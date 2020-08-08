@@ -2,7 +2,8 @@ import React from 'react';
 
 // import '../../styles/global.css'
 import PostService from '../../services/postService'
-import commentsService from '../../services/commentsService'
+import UserServide from '../../services/userServices'
+import CommentsService from '../../services/commentsService'
 import { Link, withRouter } from "react-router-dom";
 
 
@@ -23,12 +24,14 @@ export class Blog extends React.Component {
             commentsList:[],
             post:"",
             link:"",
+            usuario: [],
             commentTupla:[],
             gridList:null,
             file:null
         };
         this.postService = new PostService();
-        this.commentsServices = new commentsService();
+        this.userService = new UserServide();
+        this.commentsServices = new CommentsService();
         
         this.onClick = this.onClick.bind(this);
         // this.onUpload = this.onUpload.bind(this);
@@ -102,6 +105,14 @@ export class Blog extends React.Component {
                 this.messages.show({ severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
             }
         })
+        this.userService.getUser().then(data => {
+            this.setState({usuario: data.data});
+        }).catch(erro => {
+            if(erro != null && erro.response != null && erro.response.data != null){
+                console.log(erro.response)
+                this.messages.show({ severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
+            }
+        })
     }
     deleteComment = async (id) => {
         await this.commentsServices.erase(id).then(data => {
@@ -146,27 +157,49 @@ export class Blog extends React.Component {
                    this.messages.show({ severity: 'error', summary: 'Error Message', detail: 'Erro ao buscar commentários' });
                }
            })
-           
-           return (<Card footer={<span>   
-                       <span className="p-float-label">
-                           <InputText id="Comment" value={this.state.comment} onChange={(e) => this.setState({comment: e.target.value})} />
-                       </span>
-                       <Button label="Adicionar commentário" onClick={() => this.addComment(item.id,this.state.comment)} icon="pi pi-check" style={{marginRight: '.25em'}}/>
-                       <Button label="Excluir" onClick={() => this.deletePost(item.id)} icon="pi pi-times" className="p-button-secondary"/>
-                   </span>} header={<img alt="Card" src={`data:image/jpeg;base64,${item.data}`}/>}>
-                   
-                   <br></br>
-                   <h5>Post</h5>
-                   <p>
-                       {item.post}
-                   </p>
-                   <h5>Link</h5>
-                   <p>
-                       {item.link}
-                   </p>
-                   <h5>Comentários</h5>
-                       {this.state.componets}
-               </Card>);
+           if(this.state.usuario.id === item.userId){
+                return (<Card footer={<span>   
+                        <span className="p-float-label">
+                            <InputText id="Comment" value={this.state.comment} onChange={(e) => this.setState({comment: e.target.value})} />
+                        </span>
+                        <Button label="Adicionar commentário" onClick={() => this.addComment(item.id,this.state.comment)} icon="pi pi-check" style={{marginRight: '.25em'}}/>
+                        <Button label="Excluir" onClick={() => this.deletePost(item.id)} icon="pi pi-times" className="p-button-secondary"/>
+                    </span>} header={<img alt="Card" src={`data:image/jpeg;base64,${item.data}`}/>}>
+                    
+                    <br></br>
+                    <h5>Post</h5>
+                    <p>
+                        {item.post}
+                    </p>
+                    <h5>Link</h5>
+                    <p>
+                        {item.link}
+                    </p>
+                    <h5>Comentários</h5>
+                        {this.state.componets}
+                </Card>);
+
+           }else{
+                return (<Card footer={<span>   
+                            <span className="p-float-label">
+                                <InputText id="Comment" value={this.state.comment} onChange={(e) => this.setState({comment: e.target.value})} />
+                            </span>
+                            <Button label="Adicionar commentário" onClick={() => this.addComment(item.id,this.state.comment)} icon="pi pi-check" style={{marginRight: '.25em'}}/>
+                        </span>} header={<img alt="Card" src={`data:image/jpeg;base64,${item.data}`}/>}>
+                    
+                    <br></br>
+                    <h5>Post</h5>
+                    <p>
+                        {item.post}
+                    </p>
+                    <h5>Link</h5>
+                    <p>
+                        {item.link}
+                    </p>
+                    <h5>Comentários</h5>
+                        {this.state.componets}
+                </Card>);
+           }
         
         });
         this.setState({gridList:result});
