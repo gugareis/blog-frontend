@@ -1,0 +1,16 @@
+---
+name: Card
+---
+
+import Card from './card'
+import { Playground } from 'docz'
+
+# Button
+
+## Basic usage
+<Playground>
+ <Card><div className="card mb-3">
+                <h3 className="card-header">{this.props.title}</h3>
+                {this.props.children}
+            </div></Card>
+</Playground>
